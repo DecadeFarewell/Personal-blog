@@ -1,0 +1,89 @@
+
+.left-content .every_day{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 15px 20px;
+    background: #f5f5f5;
+    border-radius: 3px;
+    box-shadow: 1px 1px 10px #5f5f5f;
+}
+
+.every_day .queto{
+    font-size: 12px;
+    color: rgba(72, 175, 84, 1)
+}
+.queto::after{
+    display: inline-block;
+    margin-left: 5px;
+    content: '\e122';
+    font-family: My-font;
+}
+@font-face{
+    font-family: My-font;
+    src: url('../font/glyphicons-halflings-regular.woff2');
+}
+.every_day .en,.ch{
+    font-size: 14px;
+    line-height: 30px;
+    color: #333;
+}
+.ch{
+    display: inline-block;
+}
+.author{
+    float: right;
+    font-size: 14px;
+    color: #333
+}
+
+
+/* article 文章部分 */
+/* article */
+.article-list{
+    width: 100%;
+    margin-top: 25px;
+}
+.article-item{
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+    border: 1px solid rgba(182, 173, 173, 0.897);
+    background-color: #fff;
+    border-radius: 3px;
+    padding: 25px 15px;
+    margin-bottom: 25px;
+}
+.article-title{
+    color: #13102b;
+    font-size: 20px;
+}
+.article-title:hover{
+    color: #23527c;
+}
+.article-content{
+    font-size: 14px;
+    color: #333;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient: vertical;
+}
+.article-footer{
+    width: 100%;
+    margin-top: 10px;
+    box-sizing: border-box;
+    line-height: 30px;
+    color: #f5f5f5;
+    position: absolute;
+    padding-left: 15px;
+    left: 0;
+    bottom: 0;
+    background-color: #000;
+}
+@media (max-width:768px){
+    .article-footer{
+        line-height: 25px;
+    }
+}

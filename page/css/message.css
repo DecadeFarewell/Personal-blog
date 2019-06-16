@@ -1,0 +1,8 @@
+.my-message{
+    border: 1px solid black;
+}
+.my-message>p{
+    line-height: 40px;
+    font-size: 14px;
+    font-family: sans-serif;
+}

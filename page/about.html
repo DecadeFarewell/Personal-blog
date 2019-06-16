@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>个人博客</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/blog_detial.css">
+    <link rel="stylesheet" href="./css/about.css">
+    <link rel="stylesheet" href="./bootstrap-3.3.7-dist/css/bootstrap.css">
+</head>
+
+<body>
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" id="myBlog" href="#">Hyuga的个人博客</a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li><a href="./index.html">首页</a></li>
+                            <li><a href="./siteMap.html">地图</a></li>
+                            <li><a href="./about.html">关于</a></li>
+                            <li><a href="./message.html">留言</a></li>
+                        </ul>
+                        <form class="navbar-form navbar-right" id="search_module">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search" v-model='searchWord'>
+                            </div>
+                            <button type="button" class="btn btn-default" @click='submit'>Submit</button>
+                        </form>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+        </div>
+    </header>
+
+    <!-- 中间内容 -->
+    <div class="main-content container">
+        <div class="row">
+            <div class="left-content col-md-8">
+                <div class="about">
+                    <h3>关于本人</h3>
+                    <div class="about-me">
+                        <p>郭某人，性别男，湖南人</p>
+                        <p>
+                            大三在校学生，学习很渣，技术很菜 <br>
+                            正在学习web前端技术<br>
+                            没有啥实际开发经验<br>
+                            最爱看火影<br>
+                            空闲时间喜欢玩梦三国(被虐)<br>
+                            ~~~~~<br>
+                        </p>
+                        <p>
+                            <br>
+
+                        </p>
+                    </div>
+                    <h3>关于博客</h3>
+                    <div class="about-blog">
+                        <p>
+                            2019年五月底建成 <br>
+                            前端使用vue，bootstrap部分功能做的适配<br>
+                            使用node.js的express框架搭建的后台<br>
+                            MySQL数据库<br>
+                            还不知道怎么上线，容我研究研究~~~<br>
+                        </p>
+                        <p>
+                            <!-- 推荐便宜又稳定的xen-VPS吧: HostShare <br>
+                            kvm vps:hostEONS 洛杉矶节点，我在用，速度可以，可以干一些羞羞的事。 -->
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 留言区 -->
+                <div class="message" id="blog_comments">
+                    <span>留言：目前有{{getTotal}}条留言</span>
+                    <div class="message-item" v-for="(item,index) in getComments">
+                        <span>
+                            <b>{{item.user_name}}</b> ：发表于 {{new Date(item.ctime*1000).toLocaleDateString()}}
+                            <span class="res" @click="replay(item.id,item.user_name)">[回复]</span>
+                        </span>
+                        <div class="message-content">
+                            {{item.content}}
+                        </div>
+                    </div>
+                </div>
+                <!-- 评论区 -->
+                <div class="res-form-wrapper" id="send_comments">
+                    <span>发表评论</span>
+                    <p>欢迎回来<strong>一位菜鸟学习</strong></p>
+                    <div class="res-form">
+                        <div class="user-info-input">
+                            <!-- 如果value值为负数，表示不是回复某个人的评论；正数反之 -->
+                            <input type="hidden" id="replay" value="-1">
+                            <input type="hidden" id="replay_name" value="0">
+                            <input type="text" placeholder="昵称" id="user-name">
+                            <input type="text" placeholder="邮箱(评论被回复时会收到通知)" id="e-mail">
+                        </div>
+                        <div class="content-input">
+                            <textarea name="" id="res-content" cols="30" rows="10" placeholder="输入你的想法"></textarea>
+                        </div>
+                        <div class="firm-mask">
+                            <input type="text" name="mask" id="mask" placeholder="验证码(区分大小写)">
+                            <div class="mask-img">
+                                <span v-html="getCode"></span>
+                                <span class="fresh" @click="getRamdonCode">看不清，换一张</span>
+                                <img src="" alt="验证码" v-if="getCode == ''">
+                            </div>
+                            <div class="submit-tips" v-if="getConfirm !='' ">
+                                <p class="tips-info">{{getConfirm}}</p>
+                            </div>
+                        </div>
+                        <div class="submit-reset">
+                            <button id="submit" @click="sendComments()">提交评论</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-content col-md-4">
+                <!-- 标签 -->
+                <div class="tag-module" id="tag_module">
+                    <div class="tag-head">随机标签云</div>
+                    <div class="tag-items">
+                        <a :href="'/indexByTags.html?tag='+item.tags" :style='{color:randomColor(),fontSize:randomSize()}' v-for="(item,index) in tags"
+                            :key="index">{{item.tags}}</a>
+                    </div>
+                </div>
+                <!-- 最近热门 -->
+                <div class="hot-tips-module" id="recent_hot">
+                    <div class="hot-tips-head">最近热门</div>
+                    <div class="hot-tips-items">
+                        <ul>
+                            <li v-for="(item,index) in tipsList" :key='index'>
+                                <a :href="item.link">{{item.title}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 最新评论 -->
+                <div class="comments-module" id="recent_comments">
+                    <div class="comments-head">最新评论</div>
+                    <div class="comments-items">
+                        <ul>
+                            <li v-for='(item,index) in commentsList' :key='index'>
+                                <span class="user-name">{{item.user_name}}</span>
+                                <span class="ctime">[{{new Date(item.ctime*1000).toLocaleDateString()}}]</span>
+                                <p class="comment">
+                                    <a :href="item.link">{{item.content}}</a>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 友情链接 -->
+                <div class="link-module">
+                    <div class="link-head">友情链接</div>
+                    <div class="link-items">
+                        <ul>
+                            <li>
+                                <span class="blog-name"><a href="#">雨花区第一C、</a></span>
+                                <span class="bloger"><a href="#">火烧流长</a></span>
+                            </li>
+                            <li>
+                                <span class="blog-name"><a href="#">电竞蔡徐坤</a></span>
+                                <span class="bloger"><a href="#">流长</a></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 底部 -->
+    <footer class="footer">
+        <ul class="list-inline">
+            <li class="item"><a href="#">深入浅出jQeury</a></li>
+            <li class="item"><a href="#">前端网络</a></li>
+            <li class="item"><a href="#">css3主流操作</a></li>
+            <li class="item"><a href="#">Bootstrap</a></li>
+            <li class="item"><a href="#">HTML5必会技能</a></li>
+            <li class="item"><a href="#">前端工程化Webpack</a></li>
+            <li class="item"><a href="#">你不知道的ES6</a></li>
+            <li class="item"><a href="#">Git</a></li>
+            <li class="item"><a href="#">设计模式</a></li>
+            <li class="item"><a href="#">微信小程序</a></li>
+            <li class="item"><a href="#">vue全家桶</a></li>
+            <li class="item"><a href="#">深入vue源码</a></li>
+            <li class="item"><a href="#">vue SSR服务端渲染</a></li>
+            <li class="item"><a href="#">揭秘nodejs的前世今生</a></li>
+            <li class="item"><a href="#">玩转React</a></li>
+            <li class="item"><a href="#">移动端适配</a></li>
+        </ul>
+        <p>@Copyright 2019-5-14Hyuga Neji个人博客</p>
+    </footer>
+
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="./bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="./js/axios.js"></script>
+    <script src="./js/about.js"></script>
+    <script src="./js/base.js"></script>
+</body>
+
+</html>

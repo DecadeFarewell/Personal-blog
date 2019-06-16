@@ -1,0 +1,85 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.header{
+    margin: 20px 0;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 18px;
+}
+.nav{
+    width: 95%;
+    height: 30px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    border: 1px solid #eee;
+    padding-left: 20px;
+    line-height: 30px;
+    font-size: 14px;
+}
+.nav>a{
+    color: #000;
+    font-weight: bold;
+}
+.nav>a:hover{
+    color: #337ab7;
+}
+.nav>a:last-child{
+    color: #666;
+    font-weight: 400;
+}
+
+.ariticle-list{
+    width: 95%;
+    margin: 15px auto 0px;
+    border: 1px solid #eee;
+    font-size: 14px;
+}
+.ariticle-list>p{
+    box-sizing: border-box;
+    color: #000;
+    font-weight: bolder;
+    margin: 20px 20px 0px 10px;
+}
+.list{
+    margin: 10px 50px;
+}
+.list .item{
+    height: 30px;
+    line-height: 30px;
+}
+.list .item a{
+    color: #000;
+    font-size: 12px;
+}
+.list .item a:hover{
+    color: #337ab7;
+}
+.to-index{
+    width: 95%;
+    height: 30px;
+    box-sizing: border-box;
+    margin:20px auto;
+    border: 1px solid #eee;
+    padding-left: 20px;
+    line-height: 30px;
+    font-size: 12px;
+}
+.to-index>a{
+    color: #000;
+    font-weight: bold;
+}
+.to-index>a:hover{
+    color: #337ab7;
+}
+
+.footer{
+    text-align: center;
+}
+.footer p{
+    font-size: 12px;
+    line-height: 30px;
+    word-spacing: 2px;
+}
